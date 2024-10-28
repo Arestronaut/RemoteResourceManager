@@ -1,0 +1,44 @@
+[
+    {
+        "key": "home.title",
+        "l10n": {
+            "de": "Reise Tagebuch",
+            "en": "Travel Diaries"
+        }
+    },
+    {
+        "key": "home.subtitle",
+        "l10n": {
+            "de": "Quasi wie das mit den Vampiren",
+            "en": "Just like the one for the vampires"
+        }
+    },
+    {
+        "key": "home.button.new_entry",
+        "l10n": {
+            "de": "Neuer Eintrag",
+            "en": "New Entry"
+        }
+    },
+    {
+        "key": "new_entry.title",
+        "l10n": {
+            "de": "Was hast du erlebt?",
+            "en": "What's happening?"
+        }
+    },
+    {
+        "key": "new_entry.button.cancel",
+        "l10n": {
+            "de": "Abbrechen",
+            "en": "Cancel"
+        }
+    },
+    {
+        "key": "new_entry.button.create",
+        "l10n": {
+            "de": "Erstellen",
+            "en": "Create"
+        }
+    }
+]
