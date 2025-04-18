@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Git Clone in Browser</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { padding: 8px; margin: 8px 0; width: 100%; max-width: 500px; }
+    pre { background: #f4f4f4; padding: 10px; max-height: 300px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h2>Clone Git Repo in Browser</h2>
+  <button type="button" id="clone_button">Clone and List Files</button>
+  <h3>Files in Repo:</h3>
+  <pre id="output">Nothing yet...</pre>
+
+  <!-- Load libraries -->
+  <script src="https://unpkg.com/@isomorphic-git/lightning-fs"></script>
+  <script src="https://unpkg.com/isomorphic-git"></script>
+
+  <script type="module">
+    document.querySelector('#clone_button').addEventListener('click', cloneRepo)
+
+    import http from 'https://unpkg.com/isomorphic-git/http/web/index.js'
+    window.fs = new LightningFS('fs')
+    window.pfs = window.fs.promises
+
+    async function cloneRepo() {
+      const url = https://github.com/Arestronaut/RemoteResourceManager.git
+      const dir = '/repo'
+      const output = document.getElementById('output')
+      output.textContent = 'Cloning...'
+
+      try {
+        // Clear dir if it already exists
+        await pfs.rmdir(dir, { recursive: true }).catch(() => {})
+
+        // Clone the repo
+        await git.clone({
+          fs: pfs,
+          http,
+          dir,
+          url,
+          singleBranch: true,
+          depth: 1
+        })
+
+        // List all files
+        const fileList = await listFilesRecursive(dir)
+        output.textContent = fileList.join('\n')
+      } catch (err) {
+        output.textContent = 'Error: ' + err.message
+      }
+    }
+
+    // Recursively list files
+    async function listFilesRecursive(path) {
+      let files = []
+      const entries = await pfs.readdir(path)
+      for (const entry of entries) {
+        const fullPath = `${path}/${entry}`
+        const stat = await pfs.stat(fullPath)
+        if (stat.type === 'dir') {
+          const nested = await listFilesRecursive(fullPath)
+          files = files.concat(nested)
+        } else {
+          files.push(fullPath)
+        }
+      }
+      return files
+    }
+  </script>
+</body>
+</html>
